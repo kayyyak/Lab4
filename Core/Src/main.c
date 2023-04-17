@@ -112,10 +112,10 @@ int main(void)
 	HAL_TIM_Base_Start(&htim1);
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
-	PID.Kp = 0.01;
-	PID.Ki = 0;
-	PID.Kd = 0;
-	arm_pid_init_f32(&PID, 0);
+	PID.Kp = 28.5;
+	PID.Ki = 0.0001;
+	PID.Kd = 25;
+	arm_pid_init_f32(&PID, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -402,7 +402,7 @@ void MotorPIDControl()
 	outputPID = arm_pid_f32(&PID, error);
 	position = counterPosition;
 
-	MotorSetDuty = outputPID * 1000;
+	MotorSetDuty = outputPID;
 
 	if(MotorSetDuty > 1000)
 	{
@@ -414,14 +414,14 @@ void MotorPIDControl()
 	}
 	if(MotorSetDuty > 0)
 	{
-		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, RESET);
 		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, SET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, RESET);
 	}
 	else if(MotorSetDuty < 0)
 	{
 		MotorSetDuty *= (-1);
-		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, RESET);
 		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, SET);
+		HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, RESET);
 	}
 	else
 	{
