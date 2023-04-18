@@ -112,9 +112,9 @@ int main(void)
 	HAL_TIM_Base_Start(&htim1);
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
-	PID.Kp = 50;
-	PID.Ki = 1;
-	PID.Kd = 10;
+	PID.Kp = 12.5;
+	PID.Ki = 0.005;
+	PID.Kd = 6.5;
 	arm_pid_init_f32(&PID, 1);
 
   /* USER CODE END 2 */
@@ -128,9 +128,9 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
 		static uint32_t timestamp = 0;
-		if (timestamp < HAL_GetTick()) //20Hz
+		if (timestamp < HAL_GetTick()) //1000Hz
 		{
-			timestamp = HAL_GetTick() + 50; //1/0.05
+			timestamp = HAL_GetTick() + 1; //1/0.001
 
 			QEIEncoderPositionVelocity_Update();
 
@@ -428,6 +428,11 @@ void MotorPIDControl()
 	{
 		MotorSetDuty = 0;
 	}
+	if(error>=-1 && error <= 1)
+	{
+		MotorSetDuty = 0;
+	}
+
 
 }
 /* USER CODE END 4 */
