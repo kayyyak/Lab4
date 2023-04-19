@@ -112,9 +112,9 @@ int main(void)
 	HAL_TIM_Base_Start(&htim1);
 	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
-	PID.Kp = 12.5;
-	PID.Ki = 0.005;
-	PID.Kd = 6.5;
+	PID.Kp = 23.25;
+	PID.Ki = 0.0000000001;
+	PID.Kd = 6.25;
 	arm_pid_init_f32(&PID, 1);
 
   /* USER CODE END 2 */
@@ -428,7 +428,7 @@ void MotorPIDControl()
 	{
 		MotorSetDuty = 0;
 	}
-	if(error>=-1 && error <= 1)
+	if(error > -1 && error < 1)
 	{
 		MotorSetDuty = 0;
 	}
